@@ -1,7 +1,7 @@
 import type { Profile } from "../shared/types";
 
 const API_BASE =
-  "https://func-mrodriguez-portfolio-fsc6fyhqfbgxafdc.brazilsouth-01.azurewebsites.net";
+  "https://func-mrodriguez-a2byetd5gefdd3b5.canadacentral-01.azurewebsites.net";
 
 export async function getProfile(): Promise<Profile> {
   const url = `${API_BASE}/api/profile`;
