@@ -6,6 +6,9 @@ import BioCard from "./BioCard";
 import SkillCard from "./SkillCard";
 import WorkExperienceSection from "./WorkExperienceSection";
 
+import LoadingPage from "./LoadingPage";
+
+
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -19,6 +22,8 @@ export default function ProfilePage() {
       });
   }, []);
 
+
+  
   if (error) {
     return (
       <main className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
@@ -27,12 +32,16 @@ export default function ProfilePage() {
     );
   }
 
+  // if (!profile) {
+  //   return (
+  //     <main className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
+  //       <p className="text-slate-300 text-sm">Loading profile...</p>
+  //     </main>
+  //   );
+  // }
+
   if (!profile) {
-    return (
-      <main className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
-        <p className="text-slate-300 text-sm">Loading profile...</p>
-      </main>
-    );
+    return <LoadingPage />;
   }
 
   return (
