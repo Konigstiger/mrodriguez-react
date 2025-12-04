@@ -1,4 +1,5 @@
 import type { Profile } from "../shared/types";
+import CvDownload from "./CvDownload";
 
 interface BioCardProps {
   profile: Profile;
@@ -63,8 +64,14 @@ export default function BioCard({ profile }: BioCardProps) {
               </a>
             ))}
           </div>
+          {/* CV download panel */}
+          <CvDownload />
+
         </div>
+
       </div>
+
+
     </div>
   );
 }

@@ -8,7 +8,6 @@ import WorkExperienceSection from "./WorkExperienceSection";
 
 import LoadingPage from "./LoadingPage";
 
-
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -22,8 +21,6 @@ export default function ProfilePage() {
       });
   }, []);
 
-
-  
   if (error) {
     return (
       <main className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
@@ -31,14 +28,6 @@ export default function ProfilePage() {
       </main>
     );
   }
-
-  // if (!profile) {
-  //   return (
-  //     <main className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
-  //       <p className="text-slate-300 text-sm">Loading profile...</p>
-  //     </main>
-  //   );
-  // }
 
   if (!profile) {
     return <LoadingPage />;
@@ -50,7 +39,7 @@ export default function ProfilePage() {
         id="mainContainer"
         className="flex flex-col xl:flex-row items-start justify-center xl:h-screen bg-slate-950 bg-fixed bg-center"
       >
-        {/* Left: Bio */}
+        {/* Left: Bio (we'll put CvDownload inside BioCard) */}
         <BioCard profile={profile} />
 
         {/* Right: Skills + Experience */}
@@ -63,8 +52,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-
-
     </main>
   );
 }
