@@ -9,7 +9,7 @@ const API_BASE =
 
 export async function getProfile(): Promise<Profile> {
   const url = `${API_BASE}/api/profile`;
-  console.log("Fetching profile from:", url);
+  //console.log("Fetching profile from:", url);
 
   try {
     console.log(API_BASE);
