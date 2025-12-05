@@ -37,20 +37,23 @@ export default function ProfilePage() {
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <div
         id="mainContainer"
-        className="flex flex-col xl:flex-row items-start justify-center xl:h-screen bg-slate-950 bg-fixed bg-center"
+        className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 xl:px-8 flex flex-col xl:flex-row items-start justify-center gap-10 xl:gap-12 py-8 bg-slate-950 bg-fixed bg-center"
       >
-        {/* Left: Bio (we'll put CvDownload inside BioCard) */}
-        <BioCard profile={profile} />
+        <div className="w-full bg-slate-900/40 rounded-xl p-4 xl:p-6 flex flex-col xl:flex-row gap-8">
+          {/* Left: Bio (we'll put CvDownload inside BioCard) */}
+          <BioCard profile={profile} />
 
-        {/* Right: Skills + Experience */}
-        <div className="w-full xl:w-3/5 px-4 xl:px-12 mt-4 xl:mt-0">
-          <div className="bg-slate-900/80 rounded-xl">
-            <div className="flex flex-col gap-4 p-4 xl:p-6">
-              <SkillCard skills={profile.skills} />
-              <WorkExperienceSection experience={profile.experience} />
+          {/* Right: Skills + Experience */}
+          <div className="w-full xl:w-2/5 px-3 xl:px-4 mt-8 xl:mt-0 self-start">
+            <div className="bg-slate-900/80 rounded-xl">
+              <div className="flex flex-col gap-4 p-4 xl:p-6">
+                <SkillCard skills={profile.skills} />
+                <WorkExperienceSection experience={profile.experience} />
+              </div>
             </div>
           </div>
         </div>
+
       </div>
     </main>
   );

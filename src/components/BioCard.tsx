@@ -10,8 +10,8 @@ export default function BioCard({ profile }: BioCardProps) {
   const portraitLarge = "/images/mrodriguez-large.jpg";
 
   return (
-    <div className="w-full xl:w-2/5 flex justify-center xl:justify-end px-4">
-      <div className="max-w-xl flex items-center h-auto xl:h-screen flex-wrap xl:my-0 my-10">
+    <div className="w-full xl:w-3/5 flex justify-center xl:justify-start px-2 text-base xl:text-lg">
+      <div className="w-full flex items-start h-auto xl:h-screen flex-wrap xl:my-0 my-10">
         <div className="w-full rounded-lg shadow-2xl bg-slate-900/90 border border-slate-700 p-6 xl:p-8">
           {/* Mobile image */}
           <div
@@ -20,38 +20,21 @@ export default function BioCard({ profile }: BioCardProps) {
           ></div>
 
           {/* Name */}
-          <h1 className="text-3xl xl:text-4xl font-bold mt-6 xl:mt-2 text-slate-50 font-sans">
+          <h1 className="text-3xl sm:text-4xl xl:text-4xl whitespace-nowrap font-bold mt-6 xl:mt-2 text-slate-50 font-sans">
             {profile.name}
           </h1>
 
           <div className="mx-auto xl:mx-0 mt-3 border-b border-slate-600 opacity-60" />
 
           {/* Headline */}
-          <h3 className="pt-3 text-slate-200 font-semibold text-lg">
+          <h3 className="pt-3 text-slate-200 font-semibold text-xl">
             {profile.headline}
           </h3>
 
           <div className="mx-auto xl:mx-0 mt-3 border-b border-slate-600 opacity-60" />
 
-          {/* Short bio */}
-          <p className="pt-4 text-slate-300 text-sm leading-relaxed">
-            {profile.shortBio}
-          </p>
-
-          {/* Location */}
-          <p className="pt-2 text-xs text-slate-400">{profile.location}</p>
-
-          {/* Large image on desktop */}
-          <div className="hidden xl:block mt-4">
-            <img
-              src={portraitLarge}
-              alt={profile.name}
-              className="rounded-lg shadow-lg border border-slate-700"
-            />
-          </div>
-
           {/* Social links */}
-          <div className="mt-4 flex flex-wrap gap-3 text-xs">
+          <div className="mt-4 flex flex-wrap gap-3 text-sm">
             {Object.entries(profile.links).map(([key, url]) => (
               <a
                 key={key}
@@ -64,6 +47,25 @@ export default function BioCard({ profile }: BioCardProps) {
               </a>
             ))}
           </div>
+
+          {/* Short bio */}
+          <p className="pt-4 text-slate-300 text-base xl:text-lg leading-relaxed">
+            {profile.shortBio}
+          </p>
+
+          {/* Location */}
+          <p className="pt-2 text-sm text-slate-400">{profile.location}</p>
+
+          {/* Large image on desktop */}
+          <div className="hidden xl:block mt-4">
+            <img
+              src={portraitLarge}
+              alt={profile.name}
+              className="rounded-lg shadow-lg border border-slate-700"
+            />
+          </div>
+
+
           {/* CV download panel */}
           <CvDownload />
 
