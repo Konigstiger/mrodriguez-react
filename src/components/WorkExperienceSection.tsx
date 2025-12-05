@@ -13,31 +13,34 @@ export default function WorkExperienceSection({ experience }: Props) {
   );
 
   return (
-    <div className="bg-slate-900/80 shadow-xl border border-slate-700 rounded p-4">
+    <div className="bg-slate-900/80 shadow-xl border border-slate-700 rounded-xl p-5 xl:p-6">
       <SectionHeader title="Work Experience" />
 
-      <div className="relative mt-2 border-l border-slate-700 ml-3">
+      <div className="relative mt-3 border-l border-slate-700 ml-3">
         {sorted.map((job) => (
-          <div key={job.id} className="mb-6 ml-4">
-            <div className="absolute -left-1.5 mt-1 h-3 w-3 rounded-full bg-sky-500 border border-slate-900" />
-            <div className="bg-slate-900/90 rounded border border-slate-700 p-3">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-1">
+          <div key={job.id} className="mb-7 ml-4">
+            {/* Timeline dot */}
+            <div className="absolute -left-1.5 mt-2 h-3.5 w-3.5 rounded-full bg-sky-500 border-2 border-slate-900" />
+
+            {/* Job card */}
+            <div className="bg-slate-900/90 rounded-lg border border-slate-700 p-4">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-2">
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-50">
+                  <h3 className="text-base xl:text-lg font-semibold text-slate-50">
                     {job.title}
                   </h3>
-                  <p className="text-xs text-slate-300">
+                  <p className="text-sm text-slate-300">
                     {job.company} · {job.location}
                   </p>
                 </div>
-                <p className="text-xs text-slate-400">
-                  {job.dateStart} – {job.dateEnd}
+                <p className="text-sm text-slate-400">
+                  {job.dateStart} → {job.dateEnd}
                 </p>
               </div>
 
               {/* Pills (tech tags) */}
               {job.pills.length > 0 && (
-                <div className="flex flex-wrap gap-1 mt-2">
+                <div className="flex flex-wrap gap-2 mt-3">
                   {job.pills.map((p) => (
                     <Pill key={p} text={p} />
                   ))}
@@ -46,7 +49,7 @@ export default function WorkExperienceSection({ experience }: Props) {
 
               {/* Bullet points */}
               {job.details.length > 0 && (
-                <ul className="mt-3 list-disc list-inside text-xs text-slate-200 space-y-1">
+                <ul className="mt-3 list-disc list-inside text-sm text-slate-200 space-y-1.5 leading-relaxed">
                   {job.details.map((d, idx) => (
                     <li key={idx}>{d}</li>
                   ))}

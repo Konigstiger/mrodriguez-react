@@ -9,7 +9,17 @@ import tailwindcss from "@tailwindcss/vite";
 //})
 
 export default defineConfig({
-  plugins: [
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+    modulePreload: {
+      polyfill: false
+    }
+  }, 
+    plugins: [
     react(),
     tailwindcss()
   ],

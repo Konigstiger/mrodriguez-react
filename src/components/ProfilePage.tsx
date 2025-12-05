@@ -35,22 +35,28 @@ export default function ProfilePage() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      <div
-        id="mainContainer"
-        className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 xl:px-8 flex flex-col xl:flex-row items-start justify-center gap-10 xl:gap-12 py-8 bg-slate-950 bg-fixed bg-center"
-      >
-        <div className="w-full bg-slate-900/40 rounded-xl p-4 xl:p-6 flex flex-col xl:flex-row gap-8">
-          {/* Left: Bio (we'll put CvDownload inside BioCard) */}
-          <BioCard profile={profile} />
 
-          {/* Right: Skills + Experience */}
-          <div className="w-full xl:w-2/5 px-3 xl:px-4 mt-8 xl:mt-0 self-start">
-            <div className="bg-slate-900/80 rounded-xl">
-              <div className="flex flex-col gap-4 p-4 xl:p-6">
+      {/* Full-width layout, centered, with a generous max width */}
+      <div className="w-full max-w-[1600px] mx-auto px-4 xl:px-10 py-10">
+
+        {/* Unified background panel */}
+        <div className="bg-slate-900/40 rounded-2xl p-4 xl:p-8">
+
+          <div className="flex flex-col xl:flex-row items-start justify-center gap-10">
+
+            {/* LEFT COLUMN (40%) */}
+            <div className="w-full xl:w-2/5">
+              <BioCard profile={profile} />
+            </div>
+
+            {/* RIGHT COLUMN (60%) */}
+            <div className="w-full xl:w-3/5 self-start">
+              <div className="bg-slate-900/80 rounded-2xl border border-slate-800 p-4 xl:p-6">
                 <SkillCard skills={profile.skills} />
                 <WorkExperienceSection experience={profile.experience} />
               </div>
             </div>
+
           </div>
         </div>
 
