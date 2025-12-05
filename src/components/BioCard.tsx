@@ -35,6 +35,22 @@ export default function BioCard({ profile }: BioCardProps) {
 
           <div className="mt-3 border-b border-slate-600 opacity-60" />
 
+          {/* Social links */}
+          <div className="mt-4 flex flex-wrap gap-3 text-sm">
+            {Object.entries(profile.links).map(([key, url]) => (
+              <a
+                key={key}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className="uppercase tracking-wide text-sky-400 hover:text-sky-300 hover:underline"
+              >
+                {key}
+              </a>
+            ))}
+          </div>
+
+
           {/* Short bio */}
           <p className="pt-4 text-slate-300 text-base xl:text-lg leading-relaxed">
             {profile.shortBio}
@@ -52,23 +68,62 @@ export default function BioCard({ profile }: BioCardProps) {
             />
           </div>
 
-          {/* Social links */}
-          <div className="mt-4 flex flex-wrap gap-3 text-sm">
-            {Object.entries(profile.links).map(([key, url]) => (
-              <a
-                key={key}
-                href={url}
-                target="_blank"
-                rel="noreferrer"
-                className="uppercase tracking-wide text-sky-400 hover:text-sky-300 hover:underline"
-              >
-                {key}
-              </a>
-            ))}
-          </div>
+
 
           {/* CV */}
           <CvDownload />
+
+          <hr className="border-slate-700 my-6" />
+
+          {/* Behance Projects Section */}
+          <div className="mt-8 space-y-6">
+            <h2 className="text-xl font-semibold text-slate-100">
+              Featured Projects
+            </h2>
+
+            {/* Project 1 */}
+            <div className="w-full flex justify-center">
+              <iframe
+                src="https://www.behance.net/embed/project/177926011?ilo0=1"
+                className="rounded-lg border border-slate-700 shadow-lg w-full max-w-md h-80"
+                allowFullScreen
+                loading="lazy"
+                frameBorder="0"
+                allow="clipboard-write"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+
+            {/* Project 2 */}
+            <div className="w-full flex justify-center">
+              <iframe
+                src="https://www.behance.net/embed/project/174928575?ilo0=1"
+                className="rounded-lg border border-slate-700 shadow-lg w-full max-w-md h-80"
+                allowFullScreen
+                loading="lazy"
+                frameBorder="0"
+                allow="clipboard-write"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+
+            {/* Project 3 */}
+            <div className="w-full flex justify-center">
+              <iframe
+                src="https://www.behance.net/embed/project/174867017?ilo0=1"
+                className="rounded-lg border border-slate-700 shadow-lg w-full max-w-md h-80"
+                allowFullScreen
+                loading="lazy"
+                frameBorder="0"
+                allow="clipboard-write"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+          </div>
+
+
+
+
         </div>
       </div>
     </div>
