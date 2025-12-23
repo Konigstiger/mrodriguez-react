@@ -1,5 +1,6 @@
 import type { Profile } from "../shared/types";
 import CvDownload from "./CvDownload";
+import Articles from "./Articles";
 
 interface BioCardProps {
   profile: Profile;
@@ -77,6 +78,9 @@ export default function BioCard({ profile }: BioCardProps) {
 
           <hr className="border-slate-700 my-6" />
 
+          {/* Here I could show the contents of the SkillCard component. It has props. */}
+
+
           {/* Behance Projects Section */}
           <div className="mt-8 space-y-6">
             <h2 className="text-xl font-semibold text-slate-100">
@@ -112,6 +116,12 @@ export default function BioCard({ profile }: BioCardProps) {
             {/* Other Projects... */}
 
           </div>
+
+          <hr className="border-slate-700 my-6" />
+
+          <Articles />
+
+
 
         </div>
       </div>
