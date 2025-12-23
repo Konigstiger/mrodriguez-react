@@ -1,18 +1,14 @@
 import type { Profile } from "../shared/types";
-
 // retrieve the url for the API (Azure Function) from environment variable on the SPA on Azure
-// bug: the env variable is not working currently, it is using the hardcoded value.
-const API_BASE =
-  import.meta.env.API_BASE_URL ??
-  "https://func-mrodriguez-a2byetd5gefdd3b5.canadacentral-01.azurewebsites.net";
+import { API_BASE_URL } from "../config";
 
 
 export async function getProfile(): Promise<Profile> {
-  const url = `${API_BASE}/api/profile`;
+  const url = `${API_BASE_URL}/api/profile`;
   //console.log("Fetching profile from:", url);
 
   try {
-    console.log(API_BASE);
+    //console.log(API_BASE_URL);
 
     const res = await fetch(url);
     console.log("Profile response status:", res.status);

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+// retrieve the url for the API (Azure Function) from environment variable on the SPA on Azure
+import { API_BASE_URL } from "../config";
+
 declare global {
   interface Window {
     turnstile?: {
@@ -15,20 +18,20 @@ declare global {
   }
 }
 
-const TURNSTILE_SITE_KEY = "0x4AAAAAACEqgckzHCe19DvX";
+// read Turnstile Site Key (public)
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY;
 
-// retrieve the url for the API (Azure Function) from environment variable on the SPA on Azure
-// bug: the env variable is not working currently, it is using the hardcoded value.
-const API_BASE =
-  import.meta.env.API_BASE_URL ??
-  "https://func-mrodriguez-a2byetd5gefdd3b5.canadacentral-01.azurewebsites.net";
+if (!TURNSTILE_SITE_KEY) {
+  throw new Error("TURNSTILE_SITE_KEY is not defined");
+}
+
 
 export default function CvDownload() {
   const [token, setToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const url = `${API_BASE}/api/cv`;
+  const url = `${API_BASE_URL}/api/cv`;
 
   useEffect(() => {
     const containerSelector = "#turnstile-cv-container";
