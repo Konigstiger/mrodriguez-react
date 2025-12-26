@@ -4,7 +4,7 @@ interface PillProps {
 
 export default function Pill({ text }: PillProps) {
   return (
-    <span className="inline-flex items-center rounded-full bg-slate-800 px-3 py-1.5 text-sm text-slate-100 border border-slate-600">
+    <span className="inline-flex items-center rounded-full bg-slate-800/70 px-3 py-1 text-xs text-slate-100 border border-slate-600/70">
       {text}
     </span>
   );
