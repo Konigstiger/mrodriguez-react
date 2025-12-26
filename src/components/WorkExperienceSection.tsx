@@ -88,7 +88,6 @@ export default function WorkExperienceSection({ experience }: Props) {
 }
 
 function ProjectsAccordion({
-  jobId,
   projects
 }: {
   jobId: string;
@@ -140,8 +139,7 @@ function ProjectsAccordion({
 }
 
 function ProjectCard({
-  project,
-  forceOpen
+  project
 }: {
   project: ExperienceProject;
   forceOpen?: boolean;
