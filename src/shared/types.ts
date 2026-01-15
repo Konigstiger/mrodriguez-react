@@ -1,31 +1,18 @@
-export interface SkillLevel {
+// types.ts
+
+export type TechWeight = {
   name: string;
-  level: number; // 1..5
-}
-
-export interface Skills {
-  soft: SkillLevel[];
-  technical: SkillLevel[];
-  interests: string[];
-}
-
-export type Profile = {
-  schemaVersion?: number; // optional for backward compatibility
-  name: string;
-  headline: string;
-  location: string;
-  shortBio: string;
-  links: Record<string, string>;
-  skills: any;
-
-  experience: ExperienceItem[];
+  weight: number;
 };
 
 export type ExperienceProject = {
   id: string;
   name: string;
   client?: string | null;
-  tech?: string[];
+
+  // normalized in UI/API layer
+  tech?: TechWeight[];
+
   highlights?: string[];
 };
 
@@ -33,17 +20,33 @@ export type ExperienceItem = {
   id: string;
   company: string;
   title: string;
-  dateStart: string;
-  dateEnd: string;
   location: string;
 
-  // OLD (optional now)
+  dateStart: string;         // YYYY-MM
+  dateEnd?: string | null;   // YYYY-MM or null
+
+  projects?: ExperienceProject[];
+
+  // legacy fallback (still supported)
   pills?: string[];
   details?: string[];
-
-  // NEW
-  projects?: ExperienceProject[];
 };
 
+// Keep the rest of your Profile type as you have it.
+// At minimum, it must include experience:
+export type Profile = {
+  schemaVersion?: number;
+  name: string;
+  headline?: string;
+  location?: string;
+  shortBio?: string;
 
+  skills?: any; // keep your current real skills typing if you already have it
+  experience: ExperienceItem[];
 
+  links?: {
+    linkedin?: string;
+    github?: string;
+    portfolio?: string;
+  };
+};

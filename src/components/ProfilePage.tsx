@@ -8,6 +8,9 @@ import WorkExperienceSection from "./WorkExperienceSection";
 
 import LoadingPage from "./LoadingPage";
 
+
+
+
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -48,6 +51,7 @@ export default function ProfilePage() {
               {/* Inner card: softer padding on mobile */}
               <div className="bg-slate-900/80 rounded-2xl border border-slate-800 p-3 sm:p-4 xl:p-6 overflow-x-hidden">
                 <SkillCard skills={profile.skills} />
+
                 <WorkExperienceSection experience={profile.experience} />
               </div>
             </div>

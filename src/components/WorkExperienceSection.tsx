@@ -1,163 +1,79 @@
-import { useMemo, useState } from "react";
-import type { ExperienceItem, ExperienceProject } from "../shared/types";
-import SectionHeader from "./SectionHeader";
-import Pill from "./Pill";
+import { useState } from "react";
 
-interface Props {
+import type { ExperienceItem, ExperienceProject, TechWeight } from "../shared/types"; // adjust path if needed
+import Pill from "./Pill"; // adjust path if needed
+//import { TechMixDonut } from "./charts/TechMixDonut"; // adjust path if needed
+import { TechMixBar } from "./charts/TechMixBar";
+
+type Props = {
   experience: ExperienceItem[];
+};
+
+function normalizeYM(ym?: string | null): string | null {
+  const v = (ym ?? "").trim();
+  return v.length === 0 ? null : v;
 }
 
-function formatYM(ym?: string) {
-  if (!ym) return "Present";
-  return ym; // already YYYY-MM in your data
+function formatRange(start?: string | null, end?: string | null) {
+  const s = normalizeYM(start) ?? "";
+  const e = normalizeYM(end);
+  return e ? `${s} → ${e}` : `${s} → Present`;
+}
+
+type RawTech = string | { name?: unknown; weight?: unknown };
+
+function normalizeTech(raw: unknown): TechWeight[] {
+  if (!Array.isArray(raw)) return [];
+
+  const map = new Map<string, number>();
+
+  for (const item of raw as RawTech[]) {
+    // OLD: "React"
+    if (typeof item === "string") {
+      const name = item.trim();
+      if (!name) continue;
+      map.set(name, (map.get(name) ?? 0) + 1);
+      continue;
+    }
+
+    // NEW: { name, weight }
+    if (item && typeof item === "object") {
+      const name = typeof item.name === "string" ? item.name.trim() : "";
+      const weight =
+        typeof item.weight === "number" && Number.isFinite(item.weight) && item.weight > 0
+          ? item.weight
+          : 1;
+
+      if (!name) continue;
+      map.set(name, (map.get(name) ?? 0) + weight);
+    }
+  }
+
+  return Array.from(map.entries()).map(([name, weight]) => ({ name, weight }));
 }
 
 function normalizeProjects(job: ExperienceItem): ExperienceProject[] {
-  // New structure
-  if (job.projects && job.projects.length > 0) return job.projects;
+  // New structure: normalize each project.tech (supports old or new formats)
+  if (job.projects && job.projects.length > 0) {
+    return job.projects.map((p) => ({
+      ...p,
+      tech: normalizeTech((p as any).tech),
+    }));
+  }
 
   // Backward compatible fallback (old structure becomes a single project)
-  const tech = job.pills ?? [];
-  const highlights = job.details ?? [];
+  const tech = normalizeTech((job as any).pills ?? []);
+  const highlights = (job as any).details ?? [];
+
   return [
     {
       id: `${job.id}-main`,
       name: "Main work",
       client: null,
       tech,
-      highlights
-    }
+      highlights,
+    },
   ];
-}
-
-export default function WorkExperienceSection({ experience }: Props) {
-  // Sort by dateStart descending
-  const sorted = useMemo(
-    () =>
-      [...experience].sort((a, b) =>
-        (b.dateStart ?? "").localeCompare(a.dateStart ?? "")
-      ),
-    [experience]
-  );
-
-  return (
-    <div className="bg-slate-900/80 shadow-xl border border-slate-700 rounded-xl p-5 xl:p-6">
-      <SectionHeader title="Work Experience" />
-
-      <div className="relative mt-4 border-l border-slate-700 ml-3">
-        {sorted.map((job) => {
-          const projects = normalizeProjects(job);
-          const hasManyProjects = projects.length > 1;
-
-          return (
-            <div key={job.id} className="mb-7 ml-4">
-              {/* Timeline dot */}
-              <div className="absolute -left-1.5 mt-2 h-3.5 w-3.5 rounded-full bg-sky-500 border-2 border-slate-900" />
-
-              {/* Job card */}
-              <div className="bg-slate-900/90 rounded-lg border border-slate-700 p-4">
-                <div className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-2">
-                  <div>
-                    <h3 className="text-base xl:text-lg font-semibold text-slate-50">
-                      {job.title}
-                    </h3>
-                    <p className="text-sm text-slate-300">
-                      {job.company} · {job.location}
-                    </p>
-                  </div>
-                  <p className="text-sm text-slate-400">
-                    {formatYM(job.dateStart)} → {formatYM(job.dateEnd)}
-                  </p>
-                </div>
-
-                {/* Projects */}
-                <div className="mt-4 space-y-2">
-                  {hasManyProjects ? (
-                    <ProjectsAccordion jobId={job.id} projects={projects} />
-                  ) : (
-                    <ProjectCard project={projects[0]} forceOpen />
-                  )}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function ProjectsAccordion({
-  projects
-}: {
-  jobId: string;
-  projects: ExperienceProject[];
-}) {
-  const [openId, setOpenId] = useState<string>(projects[0]?.id ?? "");
-
-  return (
-    <div className="space-y-2">
-      {projects.map((p) => {
-        const isOpen = p.id === openId;
-        return (
-          <div
-            key={p.id}
-            className="rounded-lg border border-slate-700/60 bg-slate-950/20"
-          >
-            <button
-              type="button"
-              onClick={() => setOpenId(isOpen ? "" : p.id)}
-              className="w-full px-3 py-2 flex items-start justify-between gap-4 text-left"
-            >
-              <div>
-                <div className="text-sm font-semibold text-slate-100">
-                  {p.name}
-                  {p.client ? (
-                    <span className="text-slate-400 font-normal">
-                      {" "}
-                      · {p.client}
-                    </span>
-                  ) : null}
-                </div>
-              </div>
-
-              <span className="text-slate-400 text-sm leading-none mt-0.5">
-                {isOpen ? "–" : "+"}
-              </span>
-            </button>
-
-            {isOpen ? (
-              <div className="px-3 pb-3">
-                <ProjectBody project={p} />
-              </div>
-            ) : null}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function ProjectCard({
-  project
-}: {
-  project: ExperienceProject;
-  forceOpen?: boolean;
-}) {
-  return (
-    <div className="rounded-lg border border-slate-700/60 bg-slate-950/20 px-3 py-3">
-      <div className="text-sm font-semibold text-slate-100">
-        {project.name}
-        {project.client ? (
-          <span className="text-slate-400 font-normal"> · {project.client}</span>
-        ) : null}
-      </div>
-
-      <div className="mt-2">
-        <ProjectBody project={project} />
-      </div>
-    </div>
-  );
 }
 
 function ProjectBody({ project }: { project: ExperienceProject }) {
@@ -166,11 +82,17 @@ function ProjectBody({ project }: { project: ExperienceProject }) {
 
   return (
     <>
+      {/* OPTION A: Compact donut + pills in a single row */}
       {tech.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2">
-          {tech.map((t) => (
-            <Pill key={t} text={t} />
-          ))}
+        <div className="flex items-center gap-3">
+          {/* <TechMixDonut tech={tech} compact /> */}
+            <TechMixBar tech={tech} />
+
+          <div className="flex flex-wrap gap-2">
+            {tech.map((t) => (
+              <Pill key={t.name} text={t.name} />
+            ))}
+          </div>
         </div>
       )}
 
@@ -182,5 +104,97 @@ function ProjectBody({ project }: { project: ExperienceProject }) {
         </ul>
       )}
     </>
+  );
+}
+
+function ProjectCard({ project }: { project: ExperienceProject }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="mt-3 rounded-xl border border-slate-700/60 bg-slate-950/20">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between gap-4 px-4 py-3 text-left"
+      >
+        <div className="min-w-0">
+          <div className="text-sm font-semibold text-slate-100 truncate">
+            {project.name}
+          </div>
+          {project.client && (
+            <div className="text-sm text-slate-400 truncate">{project.client}</div>
+          )}
+        </div>
+
+        <div className="text-slate-400 select-none">{open ? "−" : "+"}</div>
+      </button>
+
+      {open && (
+        <div className="px-4 pb-4">
+          <ProjectBody project={project} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProjectsAccordion({ projects }: { projects: ExperienceProject[] }) {
+  if (!projects || projects.length === 0) return null;
+
+  // If only one project, render it open by default (no accordion UX needed)
+  if (projects.length === 1) {
+    return (
+      <div className="mt-3 rounded-xl border border-slate-700/60 bg-slate-950/20 px-4 py-4">
+        <ProjectBody project={projects[0]} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-3">
+      {projects.map((p) => (
+        <ProjectCard key={p.id} project={p} />
+      ))}
+    </div>
+  );
+}
+
+export default function WorkExperienceSection({ experience }: Props) {
+  if (!experience || experience.length === 0) return null;
+
+  return (
+    <section>
+      <div className="mb-4">
+        <h2 className="text-xl font-semibold text-slate-100">Work Experience</h2>
+        <div className="h-px bg-slate-700/70 mt-2" />
+      </div>
+
+      <div className="space-y-8">
+        {experience.map((job) => {
+          const projects = normalizeProjects(job);
+
+          return (
+            <div key={job.id} className="rounded-2xl border border-slate-700/60 bg-slate-950/20 p-5">
+              <div className="flex items-start justify-between gap-6">
+                <div className="min-w-0">
+                  <div className="text-lg font-semibold text-slate-100 truncate">
+                    {job.title}
+                  </div>
+                  <div className="text-sm text-slate-300 truncate">
+                    {job.company} · {job.location}
+                  </div>
+                </div>
+
+                <div className="text-sm text-slate-400 whitespace-nowrap">
+                  {formatRange(job.dateStart, job.dateEnd)}
+                </div>
+              </div>
+
+              <ProjectsAccordion projects={projects} />
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
