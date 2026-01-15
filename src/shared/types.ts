@@ -41,12 +41,23 @@ export type Profile = {
   location?: string;
   shortBio?: string;
 
-  skills?: any; // keep your current real skills typing if you already have it
+  skills: any; // keep your current real skills typing if you already have it
   experience: ExperienceItem[];
 
-  links?: {
+  links: {
     linkedin?: string;
     github?: string;
     portfolio?: string;
   };
 };
+
+export interface SkillLevel {
+  name: string;
+  level: number; // 1..5
+}
+
+export interface Skills {
+  soft: SkillLevel[];
+  technical: SkillLevel[];
+  interests: string[];
+}

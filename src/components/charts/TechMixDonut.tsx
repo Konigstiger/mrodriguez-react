@@ -39,7 +39,7 @@ export function TechMixDonut({ tech, compact = false }: Props) {
 
       {compact ? (
         // Compact: narrow and short, does not consume horizontal space
-        <div className="h-[56px] w-[150px]">
+        <div className="h-14 w-[150px]">
           <ResponsiveContainer>
             <PieChart>
               <Pie
