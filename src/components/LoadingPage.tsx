@@ -4,7 +4,7 @@ export default function LoadingPage() {
     <main className="relative flex min-h-screen w-screen items-center justify-center bg-slate-950 text-slate-100 overflow-hidden">
       {/* Subtle background glow */}
       <div
-        className="pointer-events-none absolute -inset-40 bg-gradient-to-br from-sky-600/10 via-slate-900 to-indigo-800/20 blur-3xl"
+        className="pointer-events-none absolute -inset-40 bg-linear-to-br from-sky-600/10 via-slate-900 to-indigo-800/20 blur-3xl"
         aria-hidden="true"
       />
 
@@ -12,7 +12,7 @@ export default function LoadingPage() {
       <div className="relative w-full max-w-xl px-10 py-10 rounded-3xl border border-slate-700/70 bg-slate-900/80 shadow-[0_30px_80px_rgba(0,0,0,0.7)]">
         {/* Inner glow */}
         <div
-          className="pointer-events-none absolute -inset-px rounded-3xl opacity-40 blur-2xl bg-gradient-to-r from-sky-500/40 via-cyan-400/30 to-indigo-500/40"
+          className="pointer-events-none absolute -inset-px rounded-3xl opacity-40 blur-2xl bg-linear-to-r from-sky-500/40 via-cyan-400/30 to-indigo-500/40"
           aria-hidden="true"
         />
 
