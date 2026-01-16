@@ -11,7 +11,7 @@ export function TechMixBar({ tech }: Props) {
   const total = tech.reduce((s, t) => s + t.weight, 0);
 
   return (
-    <div className="rounded-xl border border-slate-700/70 bg-slate-950/30 p-2 w-[200px]">
+    <div className="rounded-xl border border-slate-700/70 bg-slate-950/30 p-2 w-full">
       <div className="flex h-4 w-full overflow-hidden rounded-md">
         {tech.map((t) => {
           const pct = (t.weight / total) * 100;

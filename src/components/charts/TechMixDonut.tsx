@@ -6,9 +6,8 @@ import {
   Tooltip,
 } from "recharts";
 
-import type { TechWeight } from "../../shared/types"; // adjust path if needed
-import { getTechColorHex } from "../../shared/techColors"; // adjust path if needed
-
+import type { TechWeight } from "../../shared/types";
+import { getTechColorHex } from "../../shared/techColors";
 type Props = {
   tech: TechWeight[];
   /**

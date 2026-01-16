@@ -82,11 +82,9 @@ function ProjectBody({ project }: { project: ExperienceProject }) {
 
   return (
     <>
-      {/* OPTION A: Compact donut + pills in a single row */}
       {tech.length > 0 && (
-        <div className="flex items-center gap-3">
-          {/* <TechMixDonut tech={tech} compact /> */}
-            <TechMixBar tech={tech} />
+        <div className="flex items-start flex-col gap-3">
+          <TechMixBar tech={tech} />
 
           <div className="flex flex-wrap gap-2">
             {tech.map((t) => (
@@ -118,11 +116,11 @@ function ProjectCard({ project }: { project: ExperienceProject }) {
         className="w-full flex items-center justify-between gap-4 px-4 py-3 text-left"
       >
         <div className="min-w-0">
-          <div className="text-sm font-semibold text-slate-100 truncate">
+          <div className="text-sm font-semibold text-slate-100 ">
             {project.name}
           </div>
           {project.client && (
-            <div className="text-sm text-slate-400 truncate">{project.client}</div>
+            <div className="text-sm text-slate-400 ">{project.client}</div>
           )}
         </div>
 
@@ -130,7 +128,7 @@ function ProjectCard({ project }: { project: ExperienceProject }) {
       </button>
 
       {open && (
-        <div className="px-4 pb-4">
+        <div className="px-4 py-1 pb-4">
           <ProjectBody project={project} />
         </div>
       )}
@@ -177,15 +175,15 @@ export default function WorkExperienceSection({ experience }: Props) {
             <div key={job.id} className="rounded-2xl border border-slate-700/60 bg-slate-950/20 p-5">
               <div className="flex items-start justify-between gap-6">
                 <div className="min-w-0">
-                  <div className="text-lg font-semibold text-slate-100 truncate">
+                  <div className="text-lg font-semibold text-slate-100 ">
                     {job.title}
                   </div>
-                  <div className="text-sm text-slate-300 truncate">
-                    {job.company} · {job.location}
+                  <div className="text-sm text-slate-300 ">
+                    {job.company} @ {job.location}
                   </div>
                 </div>
 
-                <div className="text-sm text-slate-400 whitespace-nowrap">
+                <div className="text-sm text-slate-400 whitespace-normal">
                   {formatRange(job.dateStart, job.dateEnd)}
                 </div>
               </div>
