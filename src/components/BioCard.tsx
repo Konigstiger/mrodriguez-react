@@ -1,6 +1,9 @@
 import type { Profile } from "../shared/types";
 import CvDownload from "./CvDownload";
-import Articles from "./Articles";
+import ArticlesSection from "./ArticlesSection";
+
+import { Link } from "react-router-dom";
+
 
 interface BioCardProps {
   profile: Profile;
@@ -35,6 +38,14 @@ export default function BioCard({ profile }: BioCardProps) {
                 {key}
               </a>
             ))}
+            <Link
+              to="/articles"
+              target="_blank"
+              className="uppercase tracking-wide text-sky-400 hover:text-sky-300 hover:underline"
+            >
+              articles
+            </Link>
+
           </div>
 
           {/* Name (one line, centered in space) */}
@@ -119,7 +130,7 @@ export default function BioCard({ profile }: BioCardProps) {
 
           <hr className="border-slate-700 my-6" />
 
-          <Articles />
+          <ArticlesSection />
 
 
 
