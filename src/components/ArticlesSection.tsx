@@ -1,9 +1,9 @@
 
-export default function Articles() {
+export default function ArticlesSection() {
   return (
     <>
       <h2 className="text-xl font-semibold text-slate-100">
-        Featured Articles
+        Legacy Articles
       </h2>
 
       <div className="mt-6 rounded-lg border border-slate-700/70 bg-slate-900/70 p-4">

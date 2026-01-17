@@ -61,3 +61,17 @@ export interface Skills {
   technical: SkillLevel[];
   interests: string[];
 }
+
+/* ARTICLES */
+
+export type ArticleListItem = {
+  slug: string;
+  title: string;
+  date: string;
+  summary: string;
+  tags: string[];
+};
+
+export type Article = ArticleListItem & {
+  contentHtml: string;
+};
