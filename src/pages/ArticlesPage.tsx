@@ -1,12 +1,10 @@
-
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { getArticles } from "../api/articles";
 import type { ArticleListItem } from "../shared/types";
 import { Link } from "react-router-dom";
 import { useMetadata } from "../shared/useMetadata";
 
-import { useMemo } from "react";
+import Pill from "../components/Pill"; 
 
 function safeParseDate(dateStr: string): number | null {
   const t = Date.parse(dateStr);
@@ -63,12 +61,7 @@ export default function ArticlesPage() {
 
     if (normalizedQuery) {
       list = list.filter((a) => {
-        const haystack = [
-          a.title,
-          a.summary,
-          (a.tags ?? []).join(" "),
-          a.date,
-        ]
+        const haystack = [a.title, a.summary, (a.tags ?? []).join(" "), a.date]
           .join(" ")
           .toLowerCase();
 
@@ -82,6 +75,10 @@ export default function ArticlesPage() {
   function clearFilters() {
     setQuery("");
     setActiveTag(null);
+  }
+
+  function toggleTag(t: string) {
+    setActiveTag((prev) => (prev === t ? null : t));
   }
 
   if (error) {
@@ -127,25 +124,21 @@ export default function ArticlesPage() {
           )}
         </div>
 
-        {/* Tag chips */}
+        {/* Tag pills (now consistent with tech pills) */}
         {allTags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {allTags.map((t) => {
               const isActive = activeTag === t;
               return (
-                <button
+                <Pill
                   key={t}
-                  type="button"
-                  onClick={() => setActiveTag(isActive ? null : t)}
-                  className={[
-                    "rounded-full border px-3 py-1 text-xs transition",
-                    isActive
-                      ? "border-white/25 bg-white/15 text-white"
-                      : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white",
-                  ].join(" ")}
-                >
-                  {t}
-                </button>
+                  text={t}
+                  as="button"
+                  active={isActive}
+                  onClick={() => toggleTag(t)}
+                  title={isActive ? "Clear tag filter" : "Filter by tag"}
+                  ariaLabel={isActive ? `Clear tag filter: ${t}` : `Filter by tag: ${t}`}
+                />
               );
             })}
           </div>
@@ -229,20 +222,15 @@ export default function ArticlesPage() {
               {a.tags?.length ? (
                 <div className="mt-4 flex flex-wrap gap-2">
                   {a.tags.map((t) => (
-                    <button
+                    <Pill
                       key={t}
-                      type="button"
-                      onClick={() => setActiveTag(activeTag === t ? null : t)}
-                      className={[
-                        "rounded-full border px-2.5 py-1 text-xs transition",
-                        activeTag === t
-                          ? "border-white/25 bg-white/15 text-white"
-                          : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white",
-                      ].join(" ")}
+                      text={t}
+                      as="button"
+                      active={activeTag === t}
+                      onClick={() => toggleTag(t)}
                       title="Filter by tag"
-                    >
-                      {t}
-                    </button>
+                      ariaLabel={`Filter by tag: ${t}`}
+                    />
                   ))}
                 </div>
               ) : null}
