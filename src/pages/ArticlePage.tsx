@@ -1,11 +1,30 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 
 import { getArticle } from "../api/articles";
 import type { Article } from "../shared/types";
 import { useMetadata } from "../shared/useMetadata";
 import { estimateReadingTimeFromHtml } from "../shared/readingTime";
 import { copyToClipboard } from "../shared/copyToClipboard";
+
+// KaTeX (client-side render over already-produced HTML)
+import renderMathInElement from "katex/contrib/auto-render";
+import "katex/dist/katex.min.css";
+
+function likelyContainsMath(html: string): boolean {
+  // Strong signals: display math or TeX delimiters
+  if (html.includes("$$") || html.includes("\\(") || html.includes("\\[") || html.includes("\\begin{")) {
+    return true;
+  }
+
+  // Heuristic for inline $...$ math: only treat as math if the content between
+  // dollars contains typical TeX operators (\, \frac, ^, _, \sqrt, \alpha, etc).
+  // This avoids running KaTeX for normal text like "$100" in non-math articles.
+  const inlineMathHeuristic =
+    /(^|[^\\])\$(?=[^$\n]*([\\^_]|\\frac|\\sqrt|\\sum|\\int|\\alpha|\\beta|\\pi|\\cdot|\\times))[^$\n]+\$/m;
+
+  return inlineMathHeuristic.test(html);
+}
 
 export default function ArticlePage() {
   const { slug } = useParams<{ slug: string }>();
@@ -15,6 +34,9 @@ export default function ArticlePage() {
   const [loading, setLoading] = useState(true);
 
   const [copied, setCopied] = useState(false);
+
+  // Where the HTML gets injected; KaTeX scans inside this element.
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const pageUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
@@ -39,6 +61,31 @@ export default function ArticlePage() {
   });
 
   const readingTime = article ? estimateReadingTimeFromHtml(article.contentHtml) : 0;
+
+  // Render LaTeX AFTER the HTML is present in the DOM.
+  useEffect(() => {
+    if (!article) return;
+    if (!contentRef.current) return;
+
+    // Don’t run KaTeX for every article; only when math is likely present.
+    if (!likelyContainsMath(article.contentHtml)) return;
+
+    try {
+      renderMathInElement(contentRef.current, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+          // Keep $...$ support, but only for articles that pass the heuristic above.
+          { left: "$", right: "$", display: false },
+        ],
+        throwOnError: false,
+        strict: "warn",
+      });
+    } catch {
+      // If KaTeX fails for any reason, the article still renders normally.
+    }
+  }, [article]);
 
   if (error) {
     return (
@@ -71,10 +118,7 @@ export default function ArticlePage() {
     <div className="mx-auto w-full max-w-3xl px-4 py-10 md:max-w-4xl">
       {/* Back link */}
       <div className="mb-6">
-        <Link
-          to="/articles"
-          className="text-sm text-white/60 transition hover:text-white"
-        >
+        <Link to="/articles" className="text-sm text-white/60 transition hover:text-white">
           ← Back to Articles
         </Link>
       </div>
@@ -108,37 +152,27 @@ export default function ArticlePage() {
           </button>
         </div>
 
-        {/* Content (readability-tuned typography) */}
+        {/* Content */}
         <div
+          ref={contentRef}
           className={[
-            // Typography base (requires @tailwindcss/typography, which you already use)
             "prose prose-invert max-w-none",
-            // Responsive reading size
             "prose-base md:prose-lg",
-            // Measure + spacing for comfortable reading
             "prose-p:leading-7 md:prose-p:leading-8",
             "prose-p:my-5",
-            // Headings: clearer hierarchy + breathing room
             "prose-headings:tracking-tight",
             "prose-h2:mt-12 prose-h2:mb-4",
             "prose-h3:mt-10 prose-h3:mb-3",
-            // Links: calm underline
             "prose-a:text-white prose-a:underline prose-a:decoration-white/30 hover:prose-a:decoration-white/70",
-            // Lists: slightly more readable
             "prose-ul:my-5 prose-ol:my-5",
             "prose-li:my-1.5",
-            // Blockquotes: subtle, readable
             "prose-blockquote:border-l-white/15 prose-blockquote:text-white/75 prose-blockquote:not-italic",
-            // Horizontal rules
             "prose-hr:border-white/10",
-            // Inline code: readable, not too loud
             "prose-code:text-white prose-code:bg-white/10 prose-code:px-1 prose-code:py-0.5 prose-code:rounded",
             "prose-code:before:content-none prose-code:after:content-none",
-            // Code blocks
             "prose-pre:border prose-pre:border-white/10 prose-pre:bg-black/30",
             "prose-pre:rounded-xl prose-pre:px-4 prose-pre:py-3",
             "prose-pre:overflow-x-auto",
-            // Tables (if any)
             "prose-table:border-collapse",
             "prose-th:border prose-th:border-white/10 prose-th:bg-white/5 prose-th:p-2",
             "prose-td:border prose-td:border-white/10 prose-td:p-2",
@@ -147,7 +181,6 @@ export default function ArticlePage() {
         />
       </article>
 
-      {/* Small bottom breathing room on mobile */}
       <div className="h-8" />
     </div>
   );
