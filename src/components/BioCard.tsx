@@ -49,7 +49,7 @@ export default function BioCard({ profile }: BioCardProps) {
           </div>
 
           {/* Name (one line, centered in space) */}
-          <h1 className="text-4xl md:text-4xl xl:text-4xl font-bold mt-2 text-slate-50 font-sans">
+          <h1 className="text-4xl md:text-4xl xl:text-4xl font-bold mt-2 text-slate-50">
             {profile.name}
           </h1>
           <div className="mt-3 border-b border-slate-600 opacity-60" />

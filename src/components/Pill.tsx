@@ -6,6 +6,11 @@ interface PillProps {
   text: string;
 
   /**
+   * Use mono typography for technical labels.
+   */
+  monospace?: boolean;
+
+  /**
    * Render as a semantic button when clickable (e.g., tag filter),
    * otherwise default is a non-interactive span.
    */
@@ -39,6 +44,7 @@ interface PillProps {
 
 export default function Pill({
   text,
+  monospace = false,
   as = "span",
   onClick,
   active = false,
@@ -58,6 +64,7 @@ export default function Pill({
     // when rendering as a button (otherwise it would get px-4 py-2 bg-slate-800, etc).
     "inline-flex items-center gap-2",
     "!rounded-full !px-3 !py-1 text-xs border",
+    monospace ? "font-mono tracking-tight" : "",
     "select-none",
     as === "button"
       ? [

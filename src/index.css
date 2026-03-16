@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap");
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -20,12 +21,34 @@ body {
 
 /* Typography defaults */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-heading: "Inter", var(--font-body);
+  --font-tech: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  font-family: var(--font-body);
   line-height: 1.5;
   font-weight: 400;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+code,
+pre,
+kbd,
+samp,
+.font-mono,
+.font-tech {
+  font-family: var(--font-tech);
 }
 
 /* Links */

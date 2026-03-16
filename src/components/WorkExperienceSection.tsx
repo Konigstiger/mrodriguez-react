@@ -88,7 +88,7 @@ function ProjectBody({ project }: { project: ExperienceProject }) {
 
           <div className="flex flex-wrap gap-2">
             {tech.map((t) => (
-              <Pill key={t.name} text={t.name} />
+              <Pill key={t.name} text={t.name} monospace />
             ))}
           </div>
         </div>
