@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getProfile } from "../api/profile";
 import type { Profile } from "../shared/types";
 import BioCard from "./BioCard";
-import SkillCard from "./SkillCard";
+// import SkillCard from "./SkillCard";
 import WorkExperienceSection from "./WorkExperienceSection";
 
 import LoadingPage from "./LoadingPage";
@@ -50,7 +50,7 @@ export default function ProfilePage() {
             <div className="w-full xl:w-3/5 self-start">
               {/* Inner card: softer padding on mobile */}
               <div className="bg-slate-900/80 rounded-2xl border border-slate-800 p-3 sm:p-4 xl:p-6 overflow-x-hidden">
-                <SkillCard skills={profile.skills} />
+                {/* <SkillCard skills={profile.skills} /> */}
 
                 <WorkExperienceSection experience={profile.experience} />
               </div>
